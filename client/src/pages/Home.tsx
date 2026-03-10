@@ -3,11 +3,27 @@ import {
   BookOpen,
   Clock,
   ArrowRight,
+  Bookmark,
+  LogIn,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BooleanBuilder } from "@/components/BooleanBuilder";
+import { trpc } from "@/lib/trpc";
+import { useLocation } from "wouter";
+import { getLoginUrl } from "@/const";
+import { toast } from "sonner";
 
 function Navbar() {
+  const { data: user } = trpc.auth.me.useQuery();
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      window.location.reload();
+    },
+    onError: () => toast.error("Failed to logout"),
+  });
+  const [, navigate] = useLocation();
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-border/20 shadow-sm">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -34,14 +50,58 @@ function Navbar() {
             </a>
           </div>
 
-          {/* Right: CTA Button */}
-          <Button 
-            variant="outline"
-            size="sm"
-            className="border-[#0A66C2] text-[#0A66C2] hover:bg-[#0A66C2]/5 font-medium"
-          >
-            Contact Sales
-          </Button>
+          {/* Right: Auth / CTA */}
+          <div className="flex items-center gap-2">
+            {user ? (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 font-medium text-[#333] hover:text-[#0A66C2]"
+                  onClick={() => navigate("/profile")}
+                >
+                  <Bookmark className="w-4 h-4" />
+                  <span className="hidden sm:inline">Saved Searches</span>
+                </Button>
+                <div className="flex items-center gap-2 pl-2 border-l border-border/40">
+                  <div className="w-7 h-7 rounded-full bg-[#0A66C2]/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-[#0A66C2]">
+                      {(user.name ?? user.email ?? "U").charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <span className="hidden sm:block text-sm font-medium text-[#333] max-w-[120px] truncate">
+                    {user.name ?? user.email}
+                  </span>
+                  <button
+                    onClick={() => logoutMutation.mutate()}
+                    className="p-1.5 rounded-md hover:bg-muted transition-colors text-muted-foreground"
+                    title="Sign out"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 font-medium text-[#333] hover:text-[#0A66C2]"
+                  onClick={() => { window.location.href = getLoginUrl(); }}
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span className="hidden sm:inline">Sign In</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-[#0A66C2] text-[#0A66C2] hover:bg-[#0A66C2]/5 font-medium"
+                >
+                  Contact Sales
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>

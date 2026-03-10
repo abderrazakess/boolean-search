@@ -25,4 +25,17 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+export const savedSearches = mysqlTable("saved_searches", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  title: varchar("title", { length: 255 }).notNull().default("Untitled Search"),
+  booleanString: text("booleanString").notNull(),
+  jtGroups: text("jtGroups").notNull().default("[]"),
+  kwGroups: text("kwGroups").notNull().default("[]"),
+  location: varchar("location", { length: 255 }).default(""),
+  radius: int("radius").default(35),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type SavedSearch = typeof savedSearches.$inferSelect;
+export type InsertSavedSearch = typeof savedSearches.$inferInsert;

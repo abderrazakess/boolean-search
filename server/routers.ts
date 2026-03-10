@@ -1,12 +1,13 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod/v4";
 import { generateObject } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { ENV } from "./_core/env";
 import { createPatchedFetch } from "./_core/patchedFetch";
+import { saveSearch, getSearchesByUserId, deleteSearchById } from "./db";
 
 function createLLMProvider() {
   const baseURL = ENV.forgeApiUrl.endsWith("/v1")
@@ -69,6 +70,43 @@ Rules:
         });
 
         return result.object;
+      }),
+  }),
+
+  savedSearches: router({
+    save: protectedProcedure
+      .input(
+        z.object({
+          title: z.string().min(1).max(255),
+          booleanString: z.string(),
+          jtGroups: z.string(),
+          kwGroups: z.string(),
+          location: z.string().optional(),
+          radius: z.number().int().min(5).max(100).optional(),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        const id = await saveSearch({
+          userId: ctx.user.id,
+          title: input.title,
+          booleanString: input.booleanString,
+          jtGroups: input.jtGroups,
+          kwGroups: input.kwGroups,
+          location: input.location ?? "",
+          radius: input.radius ?? 35,
+        });
+        return { id };
+      }),
+
+    list: protectedProcedure.query(async ({ ctx }) => {
+      return getSearchesByUserId(ctx.user.id);
+    }),
+
+    delete: protectedProcedure
+      .input(z.object({ id: z.number().int() }))
+      .mutation(async ({ input, ctx }) => {
+        await deleteSearchById(input.id, ctx.user.id);
+        return { success: true };
       }),
   }),
 });

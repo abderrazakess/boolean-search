@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Copy,
   Check,
@@ -6,11 +6,24 @@ import {
   Linkedin,
   Pencil,
   Sparkles,
+  Bookmark,
+  BookmarkCheck,
+  LogIn,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { KeywordField } from "./KeywordField";
 import type { KeywordGroup } from "@shared/types";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { getLoginUrl } from "@/const";
 
 export function BooleanBuilder() {
   const [jtSelected, setJtSelected] = useState<KeywordGroup[]>([]);
@@ -20,6 +33,38 @@ export function BooleanBuilder() {
   const [copied, setCopied] = useState(false);
   const [searchTitle, setSearchTitle] = useState("Search Title");
   const [editingTitle, setEditingTitle] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
+
+  const { data: user } = trpc.auth.me.useQuery();
+
+  // Load a saved search from sessionStorage (set by Profile page)
+  useEffect(() => {
+    const raw = sessionStorage.getItem("loadSearch");
+    if (!raw) return;
+    sessionStorage.removeItem("loadSearch");
+    try {
+      const data = JSON.parse(raw);
+      if (data.title) setSearchTitle(data.title);
+      if (data.jtGroups) setJtSelected(data.jtGroups);
+      if (data.kwGroups) setKwSelected(data.kwGroups);
+      if (data.location) setLocation(data.location);
+      if (data.radius) setRadius([data.radius]);
+    } catch {
+      // ignore parse errors
+    }
+  }, []);
+
+  const saveMutation = trpc.savedSearches.save.useMutation({
+    onSuccess: () => {
+      setSaved(true);
+      toast.success("Search saved to your profile!");
+      setTimeout(() => setSaved(false), 3000);
+    },
+    onError: () => {
+      toast.error("Failed to save search. Please try again.");
+    },
+  });
 
   const toggleGroup = (
     group: KeywordGroup,
@@ -58,8 +103,61 @@ export function BooleanBuilder() {
     window.open(url, "_blank");
   };
 
+  const handleSave = () => {
+    if (!hasBoolean) return;
+    if (!user) {
+      setShowLoginDialog(true);
+      return;
+    }
+    saveMutation.mutate({
+      title: searchTitle,
+      booleanString,
+      jtGroups: JSON.stringify(jtSelected),
+      kwGroups: JSON.stringify(kwSelected),
+      location,
+      radius: radius[0],
+    });
+  };
+
   return (
     <div className="w-full">
+      {/* Login prompt dialog */}
+      <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl">
+              <Bookmark className="w-5 h-5 text-primary" />
+              Save Your Boolean Search
+            </DialogTitle>
+            <DialogDescription className="text-base pt-1">
+              Create a free account to save your boolean searches and access them anytime from your profile.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 pt-2">
+            <div className="bg-secondary/60 rounded-lg p-4 text-sm text-muted-foreground space-y-1.5">
+              <p className="font-semibold text-foreground">With an account you can:</p>
+              <p>• Save unlimited boolean searches</p>
+              <p>• Access all previous searches from your profile</p>
+              <p>• Load saved searches back into the builder</p>
+            </div>
+            <Button
+              className="w-full gap-2 font-semibold"
+              onClick={() => { window.location.href = getLoginUrl(); }}
+            >
+              <LogIn className="w-4 h-4" />
+              Create Account / Sign In
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full text-muted-foreground"
+              onClick={() => setShowLoginDialog(false)}
+            >
+              Continue without saving
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Card */}
       <div className="bg-card rounded-2xl shadow-lg border border-border/60 overflow-visible">
         {/* Title row */}
@@ -198,6 +296,27 @@ export function BooleanBuilder() {
 
         {/* Action buttons */}
         <div className="border-t border-border/50 px-6 py-4 flex flex-col sm:flex-row justify-end gap-3">
+          <Button
+            variant="outline"
+            className={`gap-2 font-semibold ${
+              saved
+                ? "border-emerald-500 text-emerald-600 hover:bg-emerald-50"
+                : ""
+            }`}
+            onClick={handleSave}
+            disabled={!hasBoolean || saveMutation.isPending}
+          >
+            {saved ? (
+              <>
+                <BookmarkCheck className="w-4 h-4" /> Saved!
+              </>
+            ) : (
+              <>
+                <Bookmark className="w-4 h-4" />
+                {saveMutation.isPending ? "Saving..." : "Save Search"}
+              </>
+            )}
+          </Button>
           <Button
             variant="outline"
             className="gap-2 font-semibold"
