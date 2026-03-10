@@ -1,0 +1,22 @@
+# Project TODO
+
+- [x] Hero banner section with compelling headline, subheadline, and CTA
+- [x] AI-powered Boolean search builder interface (job title + keywords inputs)
+- [x] Real-time Boolean string generation with character count and copy-to-clipboard
+- [x] Location-based search with radius slider
+- [x] Selected keyword groups as removable chips with visual feedback
+- [x] Hover preview tooltips showing term expansions for keyword groups
+- [x] OpenAI API integration for keyword suggestions via tRPC backend
+- [x] SEO optimization (meta tags, Open Graph, schema.org, semantic HTML)
+- [x] Responsive design for desktop and mobile
+- [x] Search results action buttons (Search LinkedIn, Search Vincere)
+- [x] Modern professional theming and styling
+- [x] Smooth animations and micro-interactions
+- [x] Refine hero section with overlapping layered mockup cards (yellow front, blue back)
+- [x] Improve feature icons visibility and sizing
+- [x] Adjust light green section layout (title left, mockup card right)
+- [x] Fine-tune spacing and padding throughout
+- [x] Update navigation bar styling to match LinkedIn Learning Solutions
+- [x] Refine hero section - reduce font size, make text more elegant and less bold
+- [x] Fix dropdown keyword tags to stay inline on one row (no wrapping)
+- [x] Refine hero section - smaller font, lighter weight, more elegant
