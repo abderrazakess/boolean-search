@@ -24,6 +24,7 @@ export function KeywordField({
   const [input, setInput] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -168,8 +169,14 @@ export function KeywordField({
                       {/* Add/Remove button */}
                       <div
                         className="relative flex-shrink-0"
-                        onMouseEnter={() => setHoveredIdx(idx)}
-                        onMouseLeave={() => setHoveredIdx(null)}
+                        onMouseEnter={(e) => {
+                          setHoveredIdx(idx);
+                          setAnchorRect((e.currentTarget as HTMLDivElement).getBoundingClientRect());
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredIdx(null);
+                          setAnchorRect(null);
+                        }}
                       >
                         <button
                           onClick={() => onToggleGroup(group)}
@@ -181,7 +188,7 @@ export function KeywordField({
                         >
                           {isSel ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
                         </button>
-                        {isHov && <TermsPreview group={group} />}
+                        {isHov && anchorRect && <TermsPreview group={group} anchorRect={anchorRect} />}
                       </div>
                     </div>
                   );

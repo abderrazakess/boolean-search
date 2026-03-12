@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(node_modules/.bin/pnpm dev:*)",
+      "Bash(node_modules/.bin/pnpm add:*)"
+    ]
+  }
+}

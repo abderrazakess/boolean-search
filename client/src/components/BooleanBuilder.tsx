@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Copy,
   Check,
@@ -6,13 +6,36 @@ import {
   Linkedin,
   Pencil,
   Sparkles,
+  Bookmark,
+  BookmarkCheck,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { KeywordField } from "./KeywordField";
+import { AuthModal } from "./AuthModal";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLocation } from "wouter";
 import type { KeywordGroup } from "@shared/types";
 
+interface SavedSearch {
+  id: string;
+  title: string;
+  booleanString: string;
+  location: string;
+  savedAt: string;
+  userId: string;
+}
+
+const STORAGE_KEY = "boolean-saved-searches";
+
 export function BooleanBuilder() {
+  const { user } = useAuth();
+  const [, navigate] = useLocation();
+
   const [jtSelected, setJtSelected] = useState<KeywordGroup[]>([]);
   const [kwSelected, setKwSelected] = useState<KeywordGroup[]>([]);
   const [location, setLocation] = useState("");
@@ -20,6 +43,19 @@ export function BooleanBuilder() {
   const [copied, setCopied] = useState(false);
   const [searchTitle, setSearchTitle] = useState("Search Title");
   const [editingTitle, setEditingTitle] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [savedSearches, setSavedSearches] = useState<SavedSearch[]>([]);
+  const [showSaved, setShowSaved] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [pendingSave, setPendingSave] = useState(false);
+
+  // Load searches for current user
+  useEffect(() => {
+    if (!user) { setSavedSearches([]); return; }
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const all: SavedSearch[] = raw ? JSON.parse(raw) : [];
+    setSavedSearches(all.filter((s) => s.userId === user.id));
+  }, [user]);
 
   const toggleGroup = (
     group: KeywordGroup,
@@ -58,8 +94,65 @@ export function BooleanBuilder() {
     window.open(url, "_blank");
   };
 
+  const doSave = (currentUser: typeof user) => {
+    if (!booleanString || !currentUser) return;
+    const entry: SavedSearch = {
+      id: Date.now().toString(),
+      title: searchTitle,
+      booleanString,
+      location,
+      savedAt: new Date().toISOString(),
+      userId: currentUser.id,
+    };
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const all: SavedSearch[] = raw ? JSON.parse(raw) : [];
+    const updated = [entry, ...all];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    setSavedSearches(updated.filter((s) => s.userId === currentUser.id));
+    setSaved(true);
+    setShowSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleSaveSearch = () => {
+    if (!booleanString) return;
+    if (!user) {
+      setPendingSave(true);
+      setShowAuthModal(true);
+      return;
+    }
+    doSave(user);
+  };
+
+  const handleAuthSuccess = () => {
+    if (pendingSave) {
+      // user is now set via context — re-read from storage after state update
+      setPendingSave(false);
+      // slight delay for context to propagate
+      setTimeout(() => {
+        const raw = localStorage.getItem("bs_session");
+        const loggedUser = raw ? JSON.parse(raw) : null;
+        doSave(loggedUser);
+      }, 50);
+    }
+  };
+
+  const handleDeleteSearch = (id: string) => {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const all: SavedSearch[] = raw ? JSON.parse(raw) : [];
+    const updated = all.filter((s) => s.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    setSavedSearches(updated.filter((s) => s.userId === user!.id));
+  };
+
   return (
     <div className="w-full">
+      <AuthModal
+        open={showAuthModal}
+        onClose={() => { setShowAuthModal(false); setPendingSave(false); }}
+        onSuccess={handleAuthSuccess}
+      />
+
       {/* Card */}
       <div className="bg-card rounded-2xl shadow-lg border border-border/60 overflow-visible">
         {/* Title row */}
@@ -207,8 +300,106 @@ export function BooleanBuilder() {
             <Linkedin className="w-4 h-4" />
             Search LinkedIn
           </Button>
+          <Button
+            onClick={handleSaveSearch}
+            disabled={!hasBoolean}
+            className={`gap-2 font-semibold transition-all ${
+              saved
+                ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                : "bg-primary hover:bg-primary/90 text-primary-foreground"
+            }`}
+          >
+            {saved ? (
+              <>
+                <BookmarkCheck className="w-4 h-4" /> Saved!
+              </>
+            ) : (
+              <>
+                <Bookmark className="w-4 h-4" /> Save Search
+              </>
+            )}
+          </Button>
         </div>
       </div>
+
+      {/* Saved Searches Panel */}
+      {user && savedSearches.length > 0 && (
+        <div className="mt-4 bg-card rounded-2xl shadow border border-border/60 overflow-hidden">
+          <button
+            onClick={() => setShowSaved((v) => !v)}
+            className="w-full px-6 py-4 flex items-center justify-between hover:bg-accent/30 transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <Bookmark className="w-4 h-4 text-primary" />
+              <span className="font-semibold text-sm text-foreground">
+                Saved Searches ({savedSearches.length})
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={(e) => { e.stopPropagation(); navigate("/dashboard"); }}
+                className="flex items-center gap-1 text-xs text-[#0A66C2] hover:underline font-semibold"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" /> View all
+              </button>
+              {showSaved ? (
+                <ChevronUp className="w-4 h-4 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              )}
+            </div>
+          </button>
+
+          {showSaved && (
+            <div className="divide-y divide-border/50">
+              {savedSearches.slice(0, 3).map((s) => (
+                <div
+                  key={s.id}
+                  className="px-6 py-4 flex items-start gap-4 hover:bg-accent/20 transition-colors"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-foreground mb-1">
+                      {s.title}
+                    </p>
+                    <p className="text-xs font-mono text-muted-foreground break-all line-clamp-2">
+                      {s.booleanString}
+                    </p>
+                    {s.location && (
+                      <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                        <MapPin className="w-3 h-3" /> {s.location}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground/60 mt-1">
+                      {new Date(s.savedAt).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteSearch(s.id)}
+                    className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
+                    title="Delete saved search"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+              {savedSearches.length > 3 && (
+                <div className="px-6 py-3 text-center">
+                  <button
+                    onClick={() => navigate("/dashboard")}
+                    className="text-xs text-[#0A66C2] font-semibold hover:underline"
+                  >
+                    View all {savedSearches.length} saved searches →
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
