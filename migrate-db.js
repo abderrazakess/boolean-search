@@ -22,39 +22,39 @@ CREATE TABLE IF NOT EXISTS users (
 `;
 
 async function migrate() {
-  const dbUrl = process.env.DATABASE_URL;
-  
-  if (!dbUrl) {
-    console.error('❌ DATABASE_URL not set');
-    process.exit(1);
-  }
+    const dbUrl = process.env.DATABASE_URL;
 
-  console.log('🔄 Starting database migration...');
-  console.log('📍 Connecting to:', dbUrl.replace(/:[^:@]+@/, ':****@'));
-
-  let connection;
-  try {
-    connection = await mysql.createConnection(dbUrl);
-    console.log('✅ Connected to database');
-
-    // Create users table
-    console.log('📝 Creating users table...');
-    await connection.execute(createUsersTable);
-    console.log('✅ Users table ready');
-
-    console.log('🎉 Migration completed successfully!');
-    await connection.end();
-    process.exit(0);
-  } catch (error) {
-    console.error('❌ Migration failed:', error.message);
-    if (error.code) {
-      console.error('Error code:', error.code);
+    if (!dbUrl) {
+        console.error('❌ DATABASE_URL not set');
+        process.exit(1);
     }
-    if (connection) {
-      await connection.end();
+
+    console.log('🔄 Starting database migration...');
+    console.log('📍 Connecting to:', dbUrl.replace(/:[^:@]+@/, ':****@'));
+
+    let connection;
+    try {
+        connection = await mysql.createConnection(dbUrl);
+        console.log('✅ Connected to database');
+
+        // Create users table
+        console.log('📝 Creating users table...');
+        await connection.execute(createUsersTable);
+        console.log('✅ Users table ready');
+
+        console.log('🎉 Migration completed successfully!');
+        await connection.end();
+        process.exit(0);
+    } catch (error) {
+        console.error('❌ Migration failed:', error.message);
+        if (error.code) {
+            console.error('Error code:', error.code);
+        }
+        if (connection) {
+            await connection.end();
+        }
+        process.exit(1);
     }
-    process.exit(1);
-  }
 }
 
 migrate();
