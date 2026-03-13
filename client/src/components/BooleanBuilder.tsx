@@ -32,7 +32,7 @@ interface SavedSearch {
 
 const STORAGE_KEY = "boolean-saved-searches";
 
-export function BooleanBuilder() {
+export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
   const { user } = useAuth();
   const [, navigate] = useLocation();
 
@@ -111,7 +111,7 @@ export function BooleanBuilder() {
     setSavedSearches(updated.filter((s) => s.userId === currentUser.id));
     setSaved(true);
     setShowSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    setTimeout(() => { setSaved(false); onSave?.(); }, 2000);
   };
 
   const handleSaveSearch = () => {

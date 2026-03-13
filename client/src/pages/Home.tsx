@@ -152,6 +152,53 @@ function BooleanBuilderSection() {
             <BooleanBuilder />
           </div>
         </div>
+
+        {/* Trusted-by logos */}
+        <div className="mt-14 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-7">
+            Trusted by recruiters at top companies
+          </p>
+          <div className="flex items-center justify-center gap-8 flex-nowrap">
+            {/* LinkedIn */}
+            <svg height="18" viewBox="0 0 84 21" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="LinkedIn" className="opacity-60 hover:opacity-90 transition-opacity">
+              <path d="M2.36 0C1.057 0 0 1.05 0 2.345c0 1.294 1.057 2.344 2.36 2.344 1.3 0 2.357-1.05 2.357-2.344C4.717 1.05 3.66 0 2.36 0zM.282 20.708h4.153V6.545H.282v14.163zM15.9 6.22c-2.02 0-3.38.893-4.163 1.74V6.545H7.584v14.163h4.153v-7.573c0-1.803.977-2.972 2.63-2.972 1.6 0 2.39 1.11 2.39 2.972v7.573h4.153v-8.63c0-3.684-2.165-5.858-5.01-5.858zM28.05.41H23.9v20.298h4.152V.41zM37.23 6.22c-4.273 0-7.254 3.008-7.254 7.395 0 4.387 2.98 7.394 7.254 7.394 4.272 0 7.254-3.007 7.254-7.394 0-4.387-2.982-7.394-7.254-7.394zm0 11.262c-1.944 0-3.102-1.54-3.102-3.868 0-2.328 1.158-3.867 3.102-3.867 1.942 0 3.1 1.539 3.1 3.867 0 2.328-1.158 3.868-3.1 3.868zM53.1 6.22c-2.02 0-3.38.893-4.163 1.74V6.545h-4.153v14.163h4.153v-7.573c0-1.803.977-2.972 2.63-2.972 1.6 0 2.39 1.11 2.39 2.972v7.573h4.153v-8.63c0-3.684-2.165-5.858-5.01-5.858z" fill="white"/>
+              <rect x="59" y="1" width="17" height="17" rx="4" fill="white"/>
+              <path d="M63.2 5.8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-1.4 1.5h2.8v8.4h-2.8V7.3zm4.5 0h2.7v1.15c.38-.65 1.2-1.35 2.45-1.35 2.1 0 3.1 1.45 3.1 3.7v4.9h-2.8v-4.5c0-1.1-.45-1.85-1.5-1.85-.9 0-1.45.65-1.45 1.85v4.5h-2.5V7.3z" fill="#0a65c2"/>
+            </svg>
+
+            {/* Indeed */}
+            <svg height="18" viewBox="0 0 72 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Indeed" className="opacity-60 hover:opacity-90 transition-opacity">
+              <circle cx="7" cy="7" r="5" stroke="white" strokeWidth="2" fill="none"/>
+              <line x1="10.5" y1="3.5" x2="14" y2="0" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <text x="17" y="17" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="16" fill="white">indeed</text>
+            </svg>
+
+            {/* Robert Half */}
+            <svg height="14" viewBox="0 0 110 14" xmlns="http://www.w3.org/2000/svg" aria-label="Robert Half" className="opacity-60 hover:opacity-90 transition-opacity">
+              <text x="0" y="12" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="white" letterSpacing="0.5">ROBERT HALF</text>
+            </svg>
+
+            {/* Korn Ferry */}
+            <svg height="14" viewBox="0 0 90 14" xmlns="http://www.w3.org/2000/svg" aria-label="Korn Ferry" className="opacity-60 hover:opacity-90 transition-opacity">
+              <text x="0" y="12" fontFamily="Georgia, serif" fontWeight="400" fontSize="13" fill="white" letterSpacing="1">KORN FERRY</text>
+            </svg>
+
+            {/* Randstad */}
+            <svg height="14" viewBox="0 0 80 14" xmlns="http://www.w3.org/2000/svg" aria-label="Randstad" className="opacity-60 hover:opacity-90 transition-opacity">
+              <text x="0" y="12" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="white">randstad</text>
+            </svg>
+
+            {/* ManpowerGroup */}
+            <svg height="14" viewBox="0 0 125 14" xmlns="http://www.w3.org/2000/svg" aria-label="ManpowerGroup" className="opacity-60 hover:opacity-90 transition-opacity">
+              <text x="0" y="12" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="white">ManpowerGroup</text>
+            </svg>
+
+            {/* Workday */}
+            <svg height="14" viewBox="0 0 80 14" xmlns="http://www.w3.org/2000/svg" aria-label="Workday" className="opacity-60 hover:opacity-90 transition-opacity">
+              <text x="0" y="12" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="white">Workday</text>
+            </svg>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -375,7 +422,7 @@ function TipsSection() {
       num: "01",
       title: "Always capitalize operators",
       body: "LinkedIn ignores lowercase \"and\", \"or\", \"not\". They must be AND, OR, NOT in uppercase or they'll be treated as regular search terms.",
-      bg: "#edf9ff",
+      bg: "#e7fade",
     },
     {
       num: "02",
@@ -387,7 +434,7 @@ function TipsSection() {
       num: "03",
       title: "Quote multi-word phrases",
       body: "Always put multi-word titles in quotes: \"Product Manager\", \"Vice President\", \"Machine Learning\". Without quotes, LinkedIn searches each word independently.",
-      bg: "#edf9ff",
+      bg: "#e7fade",
     },
     {
       num: "04",
@@ -399,7 +446,7 @@ function TipsSection() {
       num: "05",
       title: "Watch the character limit",
       body: "LinkedIn free search caps at ~1,000 characters. Our tool shows a live character count. If you're over limit, remove lower-priority keyword groups.",
-      bg: "#edf9ff",
+      bg: "#e7fade",
     },
     {
       num: "06",
@@ -507,21 +554,15 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 const profilesLeft = [
-  { name: "Bessie Cooper", role: "Sales Manager", company: "Louis Vuitton", verified: true, avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "Wade Warren", role: "President of Sales", company: "Ferrari", verified: true, avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Alison Parker", role: "Developer", company: "Apple", verified: false, avatar: "https://randomuser.me/api/portraits/women/68.jpg" },
-  { name: "Elon Musk", role: "CEO", company: "Tesla Inc", verified: false, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoW8Hwq7_US6t0v3ppB7H7WK8PDY9Ds5CRKX6nDqFKAc42G8D3P8RWO8lJxkxi5CChaPj7QYszO6bGrbRmVXCatmo2PbGM9qnyzTeIblk&s=10" },
   { name: "Sarah Chen", role: "VP Engineering", company: "Google", verified: true, avatar: "https://randomuser.me/api/portraits/women/26.jpg" },
   { name: "Marcus Johnson", role: "CTO", company: "Microsoft", verified: true, avatar: "https://randomuser.me/api/portraits/men/46.jpg" },
+  { name: "Bessie Cooper", role: "Sales Manager", company: "Louis Vuitton", verified: true, avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
 ];
 
 const profilesRight = [
-  { name: "Abderrazak Essoussi", role: "Chief Marketing Officer", company: "Zara", verified: true, avatar: "https://media.licdn.com/dms/image/v2/D4E03AQErnFCx8H1WIg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1730704550894?e=2147483647&v=beta&t=Ay8bH-BLGEVAbqkI61uF8jeNwV17_d57TZGJ2XrP8n0" },
-  { name: "Floyd Miles", role: "Director", company: "McDonald's", verified: false, avatar: "https://randomuser.me/api/portraits/men/22.jpg" },
-  { name: "Ralph Edwards", role: "Recruiter", company: "Starbucks", verified: true, avatar: "https://randomuser.me/api/portraits/men/29.jpg" },
-  { name: "Peter Black", role: "HR Director", company: "Amazon", verified: false, avatar: "https://randomuser.me/api/portraits/men/85.jpg" },
   { name: "Emma Wilson", role: "Product Lead", company: "Netflix", verified: true, avatar: "https://randomuser.me/api/portraits/women/17.jpg" },
   { name: "David Kim", role: "Sales Director", company: "Samsung", verified: true, avatar: "https://randomuser.me/api/portraits/men/52.jpg" },
+  { name: "Floyd Miles", role: "Director", company: "McDonald's", verified: false, avatar: "https://randomuser.me/api/portraits/men/22.jpg" },
 ];
 
 const ctaAvatars = [
@@ -583,11 +624,12 @@ function AnimatedColumn({ profiles, side }: {
   profiles: typeof profilesLeft;
   side: "left" | "right";
 }) {
-  const [offset, setOffset] = useState(0);
   const cardHeight = 70;
   const gap = 20;
   const itemHeight = cardHeight + gap;
   const totalHeight = itemHeight * profiles.length;
+  // Start right column mid-cycle so cards are immediately visible on both sides
+  const [offset, setOffset] = useState(() => side === "right" ? -(totalHeight / 2) : 0);
 
   useEffect(() => {
     const speed = side === "left" ? 0.4 : -0.4;
@@ -610,7 +652,14 @@ function AnimatedColumn({ profiles, side }: {
   return (
     <div
       className="absolute overflow-hidden"
-      style={{ width: "320px", [side]: "-10px", top: "-10px", bottom: "0px" }}
+      style={{
+        width: "320px",
+        [side]: "-10px",
+        top: "0px",
+        height: "60%",
+        maskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 72%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 72%, transparent 100%)",
+      }}
     >
       {allProfiles.map((profile, idx) => {
         const patternIdx = idx % 3;
@@ -665,6 +714,18 @@ function CTASection() {
             >
               <span className="text-base font-semibold">Start for Free</span>
             </button>
+            <div className="flex flex-nowrap items-center justify-center gap-2.5 mt-4 mb-12">
+              {["LinkedIn", "Sales Navigator", "LinkedIn Recruiter"].map((label) => (
+                <span key={label} className="inline-flex items-center gap-1.5 text-xs font-semibold border rounded-full px-3 py-1 bg-white/10 border-white/20 text-white whitespace-nowrap">
+                  <span className="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 opacity-70"></span>
+                  {label}
+                </span>
+              ))}
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold border rounded-full px-3 py-1 bg-emerald-500/20 border-emerald-400/40 text-emerald-300 whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 opacity-70"></span>
+                Free — No Signup
+              </span>
+            </div>
           </div>
         </div>
       </div>

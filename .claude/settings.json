@@ -4,7 +4,13 @@
       "WebFetch(domain:upload.wikimedia.org)",
       "WebFetch(domain:api.wikimedia.org)",
       "Bash(npx tsc:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(curl -s --max-time 5 \"https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.hrdive.com%2Ffeeds%2Fnews%2F&count=3\")",
+      "Bash(curl -s --max-time 5 \"https://www.hrdive.com/feeds/news/\")",
+      "Bash(curl -s --max-time 5 \"https://www.shrm.org/rss/pages/rss.aspx\")",
+      "Bash(node -e \":*)",
+      "Bash(pnpm add:*)"
     ]
   }
 }
