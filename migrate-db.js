@@ -25,8 +25,9 @@ async function migrate() {
     const dbUrl = process.env.DATABASE_URL;
 
     if (!dbUrl) {
-        console.error('❌ DATABASE_URL not set');
-        process.exit(1);
+        console.warn('⚠️  DATABASE_URL not set - skipping migration');
+        console.log('ℹ️  App will run without database features');
+        process.exit(0);
     }
 
     console.log('🔄 Starting database migration...');
@@ -46,14 +47,19 @@ async function migrate() {
         await connection.end();
         process.exit(0);
     } catch (error) {
-        console.error('❌ Migration failed:', error.message);
+        console.warn('⚠️  Migration failed:', error.message);
         if (error.code) {
-            console.error('Error code:', error.code);
+            console.warn('Error code:', error.code);
         }
+        console.log('ℹ️  App will start anyway. Create tables manually:');
+        console.log('   railway service MySQL');
+        console.log('   railway connect');
+        console.log('   Then run the SQL from drizzle/0000_neat_molten_man.sql');
         if (connection) {
             await connection.end();
         }
-        process.exit(1);
+        // Exit with 0 to allow app to start
+        process.exit(0);
     }
 }
 
