@@ -22,7 +22,10 @@ function Navbar() {
           <div className="flex items-center justify-between h-16">
             {/* Left: Logo */}
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="Boolean Search Generator" className="h-8 w-auto" />
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-[#FFFF]">Recruter</span>
+                <span className="text-xs text-white/70">Boolean Search</span>
+              </div>
             </div>
 
             {/* Center: Nav Links */}
@@ -155,47 +158,29 @@ function BooleanBuilderSection() {
         {/* Trusted-by logos */}
         <div className="mt-14 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-7">
-            Trusted by recruiters at top companies
+            Trusted by recruiters at these companies
           </p>
           <div className="flex items-center justify-center gap-8 flex-nowrap">
             {/* LinkedIn */}
-            <svg height="18" viewBox="0 0 84 21" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="LinkedIn" className="opacity-60 hover:opacity-90 transition-opacity">
-              <path d="M2.36 0C1.057 0 0 1.05 0 2.345c0 1.294 1.057 2.344 2.36 2.344 1.3 0 2.357-1.05 2.357-2.344C4.717 1.05 3.66 0 2.36 0zM.282 20.708h4.153V6.545H.282v14.163zM15.9 6.22c-2.02 0-3.38.893-4.163 1.74V6.545H7.584v14.163h4.153v-7.573c0-1.803.977-2.972 2.63-2.972 1.6 0 2.39 1.11 2.39 2.972v7.573h4.153v-8.63c0-3.684-2.165-5.858-5.01-5.858zM28.05.41H23.9v20.298h4.152V.41zM37.23 6.22c-4.273 0-7.254 3.008-7.254 7.395 0 4.387 2.98 7.394 7.254 7.394 4.272 0 7.254-3.007 7.254-7.394 0-4.387-2.982-7.394-7.254-7.394zm0 11.262c-1.944 0-3.102-1.54-3.102-3.868 0-2.328 1.158-3.867 3.102-3.867 1.942 0 3.1 1.539 3.1 3.867 0 2.328-1.158 3.868-3.1 3.868zM53.1 6.22c-2.02 0-3.38.893-4.163 1.74V6.545h-4.153v14.163h4.153v-7.573c0-1.803.977-2.972 2.63-2.972 1.6 0 2.39 1.11 2.39 2.972v7.573h4.153v-8.63c0-3.684-2.165-5.858-5.01-5.858z" fill="white" />
-              <rect x="59" y="1" width="17" height="17" rx="4" fill="white" />
-              <path d="M63.2 5.8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-1.4 1.5h2.8v8.4h-2.8V7.3zm4.5 0h2.7v1.15c.38-.65 1.2-1.35 2.45-1.35 2.1 0 3.1 1.45 3.1 3.7v4.9h-2.8v-4.5c0-1.1-.45-1.85-1.5-1.85-.9 0-1.45.65-1.45 1.85v4.5h-2.5V7.3z" fill="#0a65c2" />
-            </svg>
+            <img src="companies_logos/4.png" alt="" className="h-6 w-auto opacity-60 hover:opacity-90 transition-opacity" />
 
             {/* Indeed */}
-            <svg height="18" viewBox="0 0 72 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Indeed" className="opacity-60 hover:opacity-90 transition-opacity">
-              <circle cx="7" cy="7" r="5" stroke="white" strokeWidth="2" fill="none" />
-              <line x1="10.5" y1="3.5" x2="14" y2="0" stroke="white" strokeWidth="2" strokeLinecap="round" />
-              <text x="17" y="17" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="16" fill="white">indeed</text>
-            </svg>
+            <img src="companies_logos/5.png" alt="" className="h-6 w-auto opacity-60 hover:opacity-90 transition-opacity" />
 
             {/* Robert Half */}
-            <svg height="14" viewBox="0 0 110 14" xmlns="http://www.w3.org/2000/svg" aria-label="Robert Half" className="opacity-60 hover:opacity-90 transition-opacity">
-              <text x="0" y="12" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="white" letterSpacing="0.5">ROBERT HALF</text>
-            </svg>
+            <img src="companies_logos/6.png" alt="" className="h-6 w-auto opacity-60 hover:opacity-90 transition-opacity" />
 
             {/* Korn Ferry */}
-            <svg height="14" viewBox="0 0 90 14" xmlns="http://www.w3.org/2000/svg" aria-label="Korn Ferry" className="opacity-60 hover:opacity-90 transition-opacity">
-              <text x="0" y="12" fontFamily="Georgia, serif" fontWeight="400" fontSize="13" fill="white" letterSpacing="1">KORN FERRY</text>
-            </svg>
+            <img src="companies_logos/7.png" alt="" className="h-6 w-auto opacity-60 hover:opacity-90 transition-opacity" />
 
             {/* Randstad */}
-            <svg height="14" viewBox="0 0 80 14" xmlns="http://www.w3.org/2000/svg" aria-label="Randstad" className="opacity-60 hover:opacity-90 transition-opacity">
-              <text x="0" y="12" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="white">randstad</text>
-            </svg>
+            <img src="companies_logos/8.png" alt="" className="h-6 w-auto opacity-60 hover:opacity-90 transition-opacity" />
 
             {/* ManpowerGroup */}
-            <svg height="14" viewBox="0 0 125 14" xmlns="http://www.w3.org/2000/svg" aria-label="ManpowerGroup" className="opacity-60 hover:opacity-90 transition-opacity">
-              <text x="0" y="12" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="white">ManpowerGroup</text>
-            </svg>
+            <img src="companies_logos/9.png" alt="" className="h-6 w-auto opacity-60 hover:opacity-90 transition-opacity" />
 
             {/* Workday */}
-            <svg height="14" viewBox="0 0 80 14" xmlns="http://www.w3.org/2000/svg" aria-label="Workday" className="opacity-60 hover:opacity-90 transition-opacity">
-              <text x="0" y="12" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="white">Workday</text>
-            </svg>
+            <img src="companies_logos/10.png" alt="" className="h-6 w-auto opacity-60 hover:opacity-90 transition-opacity" />
           </div>
         </div>
       </div>
@@ -736,8 +721,8 @@ function Footer() {
     <footer className="bg-white border-t border-gray-200 py-6">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-[#0A66C2]">Boolean</span>
-          <span className="text-xs text-[#666]">Search Generator</span>
+          <span className="text-sm font-bold text-[#0A66C2]">Recruter</span>
+          <span className="text-xs text-[#666]">Boolean Search</span>
         </div>
         <p className="text-sm text-[#666]">&copy; 2026 LinkedIn Boolean Search Generator. All rights reserved.</p>
         <div className="flex items-center gap-5 text-sm text-[#666]">
