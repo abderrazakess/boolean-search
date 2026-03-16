@@ -22,8 +22,7 @@ function Navbar() {
           <div className="flex items-center justify-between h-16">
             {/* Left: Logo */}
             <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-white">Boolean</span>
-              <span className="text-sm text-blue-300 font-medium">Search Generator</span>
+              <img src="/logo.png" alt="Boolean Search Generator" className="h-8 w-auto" />
             </div>
 
             {/* Center: Nav Links */}
@@ -161,15 +160,15 @@ function BooleanBuilderSection() {
           <div className="flex items-center justify-center gap-8 flex-nowrap">
             {/* LinkedIn */}
             <svg height="18" viewBox="0 0 84 21" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="LinkedIn" className="opacity-60 hover:opacity-90 transition-opacity">
-              <path d="M2.36 0C1.057 0 0 1.05 0 2.345c0 1.294 1.057 2.344 2.36 2.344 1.3 0 2.357-1.05 2.357-2.344C4.717 1.05 3.66 0 2.36 0zM.282 20.708h4.153V6.545H.282v14.163zM15.9 6.22c-2.02 0-3.38.893-4.163 1.74V6.545H7.584v14.163h4.153v-7.573c0-1.803.977-2.972 2.63-2.972 1.6 0 2.39 1.11 2.39 2.972v7.573h4.153v-8.63c0-3.684-2.165-5.858-5.01-5.858zM28.05.41H23.9v20.298h4.152V.41zM37.23 6.22c-4.273 0-7.254 3.008-7.254 7.395 0 4.387 2.98 7.394 7.254 7.394 4.272 0 7.254-3.007 7.254-7.394 0-4.387-2.982-7.394-7.254-7.394zm0 11.262c-1.944 0-3.102-1.54-3.102-3.868 0-2.328 1.158-3.867 3.102-3.867 1.942 0 3.1 1.539 3.1 3.867 0 2.328-1.158 3.868-3.1 3.868zM53.1 6.22c-2.02 0-3.38.893-4.163 1.74V6.545h-4.153v14.163h4.153v-7.573c0-1.803.977-2.972 2.63-2.972 1.6 0 2.39 1.11 2.39 2.972v7.573h4.153v-8.63c0-3.684-2.165-5.858-5.01-5.858z" fill="white"/>
-              <rect x="59" y="1" width="17" height="17" rx="4" fill="white"/>
-              <path d="M63.2 5.8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-1.4 1.5h2.8v8.4h-2.8V7.3zm4.5 0h2.7v1.15c.38-.65 1.2-1.35 2.45-1.35 2.1 0 3.1 1.45 3.1 3.7v4.9h-2.8v-4.5c0-1.1-.45-1.85-1.5-1.85-.9 0-1.45.65-1.45 1.85v4.5h-2.5V7.3z" fill="#0a65c2"/>
+              <path d="M2.36 0C1.057 0 0 1.05 0 2.345c0 1.294 1.057 2.344 2.36 2.344 1.3 0 2.357-1.05 2.357-2.344C4.717 1.05 3.66 0 2.36 0zM.282 20.708h4.153V6.545H.282v14.163zM15.9 6.22c-2.02 0-3.38.893-4.163 1.74V6.545H7.584v14.163h4.153v-7.573c0-1.803.977-2.972 2.63-2.972 1.6 0 2.39 1.11 2.39 2.972v7.573h4.153v-8.63c0-3.684-2.165-5.858-5.01-5.858zM28.05.41H23.9v20.298h4.152V.41zM37.23 6.22c-4.273 0-7.254 3.008-7.254 7.395 0 4.387 2.98 7.394 7.254 7.394 4.272 0 7.254-3.007 7.254-7.394 0-4.387-2.982-7.394-7.254-7.394zm0 11.262c-1.944 0-3.102-1.54-3.102-3.868 0-2.328 1.158-3.867 3.102-3.867 1.942 0 3.1 1.539 3.1 3.867 0 2.328-1.158 3.868-3.1 3.868zM53.1 6.22c-2.02 0-3.38.893-4.163 1.74V6.545h-4.153v14.163h4.153v-7.573c0-1.803.977-2.972 2.63-2.972 1.6 0 2.39 1.11 2.39 2.972v7.573h4.153v-8.63c0-3.684-2.165-5.858-5.01-5.858z" fill="white" />
+              <rect x="59" y="1" width="17" height="17" rx="4" fill="white" />
+              <path d="M63.2 5.8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-1.4 1.5h2.8v8.4h-2.8V7.3zm4.5 0h2.7v1.15c.38-.65 1.2-1.35 2.45-1.35 2.1 0 3.1 1.45 3.1 3.7v4.9h-2.8v-4.5c0-1.1-.45-1.85-1.5-1.85-.9 0-1.45.65-1.45 1.85v4.5h-2.5V7.3z" fill="#0a65c2" />
             </svg>
 
             {/* Indeed */}
             <svg height="18" viewBox="0 0 72 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Indeed" className="opacity-60 hover:opacity-90 transition-opacity">
-              <circle cx="7" cy="7" r="5" stroke="white" strokeWidth="2" fill="none"/>
-              <line x1="10.5" y1="3.5" x2="14" y2="0" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="7" cy="7" r="5" stroke="white" strokeWidth="2" fill="none" />
+              <line x1="10.5" y1="3.5" x2="14" y2="0" stroke="white" strokeWidth="2" strokeLinecap="round" />
               <text x="17" y="17" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="16" fill="white">indeed</text>
             </svg>
 
@@ -587,9 +586,8 @@ function ProfileCard({ profile, isLight = false, avatarIndex = 0 }: {
 }) {
   return (
     <div
-      className={`flex items-center gap-3 px-4 py-3 rounded-2xl shadow-lg ${
-        isLight ? "bg-white text-gray-800" : "bg-[#4a90e2] text-white"
-      }`}
+      className={`flex items-center gap-3 px-4 py-3 rounded-2xl shadow-lg ${isLight ? "bg-white text-gray-800" : "bg-[#4a90e2] text-white"
+        }`}
       style={{ width: "220px" }}
     >
       <img
