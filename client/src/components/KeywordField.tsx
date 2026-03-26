@@ -53,7 +53,7 @@ export function KeywordField({
     const val = e.target.value;
     setInput(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    if (val.length >= 3) {
+    if (val.length >= 2) {
       debounceRef.current = setTimeout(() => loadGroups(val), 600);
     } else {
       setShowDropdown(false);
@@ -130,9 +130,8 @@ export function KeywordField({
                   return (
                     <div
                       key={idx}
-                      className={`flex items-center gap-3 px-4 py-3 transition-colors ${
-                        isSel ? "bg-accent/50" : "hover:bg-accent/30"
-                      } ${idx < groups.length - 1 ? "border-b border-border/50" : ""}`}
+                      className={`flex items-center gap-3 px-4 py-3 transition-colors ${isSel ? "bg-accent/50" : "hover:bg-accent/30"
+                        } ${idx < groups.length - 1 ? "border-b border-border/50" : ""}`}
                     >
                       {/* Group name - fixed width */}
                       <div className="text-sm font-medium text-foreground flex-shrink-0 w-36">
@@ -180,11 +179,10 @@ export function KeywordField({
                       >
                         <button
                           onClick={() => onToggleGroup(group)}
-                          className={`w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all ${
-                            isSel
+                          className={`w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all ${isSel
                               ? "bg-primary border-primary text-primary-foreground"
                               : "bg-white border-primary text-primary hover:bg-primary/10"
-                          }`}
+                            }`}
                         >
                           {isSel ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
                         </button>
