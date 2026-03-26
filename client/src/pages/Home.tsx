@@ -18,7 +18,7 @@ function Navbar() {
     <>
       <AuthModal open={showAuth} onClose={() => setShowAuth(false)} />
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a65c2] border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-3 md:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Left: Logo */}
             <div className="flex items-center gap-2">
@@ -117,7 +117,7 @@ function BooleanBuilderSection() {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#0A66C2] rounded-full opacity-10 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-blue-400 rounded-full opacity-10 blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-5xl mx-auto px-6 lg:px-8">
+      <div className="relative max-w-5xl mx-auto px-3 md:px-6 lg:px-8">
         {/* H1 */}
         <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-5 tracking-tight">
           LinkedIn Boolean Search Generator
@@ -160,7 +160,7 @@ function BooleanBuilderSection() {
           <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-7">
             Trusted by recruiters at these companies
           </p>
-          <div className="flex items-center justify-center gap-8 flex-nowrap">
+          <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap md:flex-nowrap">
             {/* LinkedIn */}
             <img src="companies_logos/4.png" alt="" className="h-6 w-auto opacity-60 hover:opacity-90 transition-opacity" />
 
@@ -193,7 +193,7 @@ function BooleanBuilderSection() {
 function WhatIsBooleanSection() {
   return (
     <section id="what-is-boolean" className="py-16 md:py-20 bg-gray-50 border-t border-gray-100">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-[#1D1D1D] mb-4">
           What Is LinkedIn Boolean Search?
         </h2>
@@ -257,7 +257,7 @@ function OperatorsSection() {
 
   return (
     <section id="operators" className="py-16 md:py-20 bg-white border-t border-gray-100">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-[#1D1D1D] mb-3">
           LinkedIn Boolean Search Operators Explained
         </h2>
@@ -313,7 +313,7 @@ function ExamplesSection() {
 
   return (
     <section id="examples" className="py-16 md:py-20 bg-gray-50 border-t border-gray-100">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-[#1D1D1D] mb-3">
           Boolean Search String Examples
         </h2>
@@ -363,7 +363,7 @@ function ComparisonSection() {
 
   return (
     <section className="py-16 md:py-20 bg-white border-t border-gray-100">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-[#1D1D1D] mb-3">
           Boolean Search: LinkedIn vs Sales Navigator vs Recruiter
         </h2>
@@ -442,7 +442,7 @@ function TipsSection() {
 
   return (
     <section className="py-16 md:py-20 bg-gray-50 border-t border-gray-100">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-[#1D1D1D] mb-3">
           Tips for Better LinkedIn Boolean Searches
         </h2>
@@ -505,7 +505,7 @@ function FAQSection() {
 
   return (
     <section id="faq" className="py-16 md:py-20 bg-white border-t border-gray-100">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-[#1D1D1D] mb-10">
           Frequently Asked Questions
         </h2>
@@ -672,9 +672,9 @@ function AnimatedColumn({ profiles, side }: {
 function CTASection() {
   return (
     <section className="pt-0 pb-16 bg-white">
-      <div className="max-w-5xl mx-auto px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-3 md:px-6 lg:px-8">
         <div
-          className="relative rounded-3xl min-h-[420px] flex items-center justify-center"
+          className="relative rounded-3xl min-h-[280px] md:min-h-[420px] flex items-center justify-center py-12 md:py-0"
           style={{
             background: "linear-gradient(180deg, #2563eb 0%, #3b82f6 100%)",
             transform: "translateY(-40px)",
@@ -682,29 +682,34 @@ function CTASection() {
             overflow: "visible",
           }}
         >
-          <AnimatedColumn profiles={profilesLeft} side="left" />
-          <AnimatedColumn profiles={profilesRight} side="right" />
+          {/* Hide animations on mobile */}
+          <div className="hidden lg:block">
+            <AnimatedColumn profiles={profilesLeft} side="left" />
+          </div>
+          <div className="hidden lg:block">
+            <AnimatedColumn profiles={profilesRight} side="right" />
+          </div>
           <div className="relative z-10 text-center px-4 max-w-md mx-auto">
-            <h2 className="text-white text-4xl md:text-5xl font-bold leading-tight mb-8">
+            <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6 md:mb-8">
               Precise LinkedIn
               <br />
               Boolean Search
             </h2>
             <button
               onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
-              className="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-3.5 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 mb-6"
+              className="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-3.5 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 mb-4 md:mb-6"
               style={{ boxShadow: "0 10px 40px rgba(16, 185, 129, 0.4)" }}
             >
               <span className="text-base font-semibold">Start for Free</span>
             </button>
-            <div className="flex flex-nowrap items-center justify-center gap-2.5 mt-4 mb-12">
+            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-2.5 mt-4">
               {["LinkedIn", "Sales Navigator", "LinkedIn Recruiter"].map((label) => (
-                <span key={label} className="inline-flex items-center gap-1.5 text-xs font-semibold border rounded-full px-3 py-1 bg-white/10 border-white/20 text-white whitespace-nowrap">
+                <span key={label} className="inline-flex items-center gap-1.5 text-xs font-semibold border rounded-full px-2.5 md:px-3 py-1 bg-white/10 border-white/20 text-white whitespace-nowrap">
                   <span className="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 opacity-70"></span>
                   {label}
                 </span>
               ))}
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold border rounded-full px-3 py-1 bg-emerald-500/20 border-emerald-400/40 text-emerald-300 whitespace-nowrap">
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold border rounded-full px-2.5 md:px-3 py-1 bg-emerald-500/20 border-emerald-400/40 text-emerald-300 whitespace-nowrap">
                 <span className="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0 opacity-70"></span>
                 Free — No Signup
               </span>
@@ -719,7 +724,7 @@ function CTASection() {
 function Footer() {
   return (
     <footer className="bg-white border-t border-gray-200 py-6">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 md:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-[#0A66C2]">Recruter</span>
           <span className="text-xs text-[#666]">Boolean Search</span>
