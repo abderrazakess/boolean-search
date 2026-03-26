@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect } from "react";
 import {
   Copy,
   Check,
-  MapPin,
   Linkedin,
   Pencil,
   Sparkles,
@@ -14,7 +13,6 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { KeywordField } from "./KeywordField";
 import { AuthModal } from "./AuthModal";
 import { useAuth } from "@/contexts/AuthContext";
@@ -25,7 +23,6 @@ interface SavedSearch {
   id: string;
   title: string;
   booleanString: string;
-  location: string;
   savedAt: string;
   userId: string;
 }
@@ -38,8 +35,6 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
 
   const [jtSelected, setJtSelected] = useState<KeywordGroup[]>([]);
   const [kwSelected, setKwSelected] = useState<KeywordGroup[]>([]);
-  const [location, setLocation] = useState("");
-  const [radius, setRadius] = useState([35]);
   const [copied, setCopied] = useState(false);
   const [searchTitle, setSearchTitle] = useState("Search Title");
   const [editingTitle, setEditingTitle] = useState(false);
@@ -100,7 +95,6 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
       id: Date.now().toString(),
       title: searchTitle,
       booleanString,
-      location,
       savedAt: new Date().toISOString(),
       userId: currentUser.id,
     };
@@ -187,49 +181,14 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
 
         {/* Form fields */}
         <div className="p-6 space-y-6">
-          {/* Row 1: Job Title + Location */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <KeywordField
-              label="Job Title"
-              placeholder="e.g. Software Engineer, Data Analyst..."
-              type="jobTitle"
-              selectedGroups={jtSelected}
-              onToggleGroup={(g) => toggleGroup(g, jtSelected, setJtSelected)}
-            />
-
-            {/* Location */}
-            <div className="w-full">
-              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 block">
-                Location
-              </label>
-              <div className="relative flex items-center">
-                <MapPin className="absolute left-3 w-4 h-4 text-muted-foreground/60" />
-                <input
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Enter city, state, or country..."
-                  className="w-full pl-10 pr-4 py-2.5 text-sm bg-secondary/50 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all outline-none placeholder:text-muted-foreground/50"
-                />
-              </div>
-              {/* Radius slider */}
-              <div className="flex items-center gap-4 mt-4">
-                <span className="text-xs text-muted-foreground font-medium whitespace-nowrap">
-                  Radius
-                </span>
-                <Slider
-                  value={radius}
-                  onValueChange={setRadius}
-                  min={5}
-                  max={100}
-                  step={5}
-                  className="flex-1"
-                />
-                <span className="text-sm font-bold text-foreground min-w-[50px] text-right">
-                  {radius[0]} mi
-                </span>
-              </div>
-            </div>
-          </div>
+          {/* Row 1: Job Title */}
+          <KeywordField
+            label="Job Title"
+            placeholder="e.g. Software Engineer, Data Analyst..."
+            type="jobTitle"
+            selectedGroups={jtSelected}
+            onToggleGroup={(g) => toggleGroup(g, jtSelected, setJtSelected)}
+          />
 
           {/* Row 2: Keywords */}
           <KeywordField
@@ -243,16 +202,14 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
 
         {/* Boolean output bar */}
         <div
-          className={`border-t border-border/50 px-6 py-4 transition-colors ${
-            hasBoolean ? "bg-accent/30" : "bg-muted/30"
-          }`}
+          className={`border-t border-border/50 px-6 py-4 transition-colors ${hasBoolean ? "bg-accent/30" : "bg-muted/30"
+            }`}
         >
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
             <div className="flex-1 min-w-0">
               <p
-                className={`text-sm font-mono leading-relaxed break-all boolean-output overflow-x-auto ${
-                  hasBoolean ? "text-foreground" : "text-muted-foreground"
-                }`}
+                className={`text-sm font-mono leading-relaxed break-all boolean-output overflow-x-auto ${hasBoolean ? "text-foreground" : "text-muted-foreground"
+                  }`}
               >
                 {hasBoolean
                   ? booleanString
@@ -268,11 +225,10 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
                   onClick={handleCopy}
                   size="sm"
                   variant={copied ? "default" : "outline"}
-                  className={`gap-1.5 text-xs font-semibold ${
-                    copied
+                  className={`gap-1.5 text-xs font-semibold ${copied
                       ? "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600"
                       : ""
-                  }`}
+                    }`}
                 >
                   {copied ? (
                     <>
@@ -303,11 +259,10 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
           <Button
             onClick={handleSaveSearch}
             disabled={!hasBoolean}
-            className={`gap-2 font-semibold transition-all ${
-              saved
+            className={`gap-2 font-semibold transition-all ${saved
                 ? "bg-emerald-600 hover:bg-emerald-700 text-white"
                 : "bg-primary hover:bg-primary/90 text-primary-foreground"
-            }`}
+              }`}
           >
             {saved ? (
               <>
@@ -364,11 +319,6 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
                     <p className="text-xs font-mono text-muted-foreground break-all line-clamp-2">
                       {s.booleanString}
                     </p>
-                    {s.location && (
-                      <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                        <MapPin className="w-3 h-3" /> {s.location}
-                      </p>
-                    )}
                     <p className="text-xs text-muted-foreground/60 mt-1">
                       {new Date(s.savedAt).toLocaleDateString(undefined, {
                         year: "numeric",
