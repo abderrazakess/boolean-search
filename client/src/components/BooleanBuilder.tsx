@@ -43,6 +43,7 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
   const [showSaved, setShowSaved] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   // Load searches for current user
   useEffect(() => {
@@ -129,6 +130,17 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
         doSave(loggedUser);
       }, 50);
     }
+  };
+
+  const handleCopySearch = async (s: SavedSearch) => {
+    await navigator.clipboard.writeText(s.booleanString);
+    setCopiedId(s.id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleSearchLinkedInHistory = (s: SavedSearch) => {
+    const url = `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(s.booleanString)}`;
+    window.open(url, "_blank");
   };
 
   const handleDeleteSearch = (id: string) => {
@@ -226,8 +238,8 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
                   size="sm"
                   variant={copied ? "default" : "outline"}
                   className={`gap-1.5 text-xs font-semibold ${copied
-                      ? "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600"
-                      : ""
+                    ? "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600"
+                    : ""
                     }`}
                 >
                   {copied ? (
@@ -260,8 +272,8 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
             onClick={handleSaveSearch}
             disabled={!hasBoolean}
             className={`gap-2 font-semibold transition-all ${saved
-                ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-                : "bg-primary hover:bg-primary/90 text-primary-foreground"
+              ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+              : "bg-primary hover:bg-primary/90 text-primary-foreground"
               }`}
           >
             {saved ? (
@@ -327,13 +339,36 @@ export function BooleanBuilder({ onSave }: { onSave?: () => void } = {}) {
                       })}
                     </p>
                   </div>
-                  <button
-                    onClick={() => handleDeleteSearch(s.id)}
-                    className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
-                    title="Delete saved search"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button
+                      onClick={() => handleCopySearch(s)}
+                      className={`p-1.5 rounded-md transition-colors shrink-0 ${copiedId === s.id
+                          ? "bg-emerald-100 text-emerald-600"
+                          : "hover:bg-accent text-muted-foreground hover:text-foreground"
+                        }`}
+                      title="Copy boolean string"
+                    >
+                      {copiedId === s.id ? (
+                        <Check className="w-4 h-4" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handleSearchLinkedInHistory(s)}
+                      className="p-1.5 rounded-md hover:bg-[#0A66C2]/10 text-muted-foreground hover:text-[#0A66C2] transition-colors shrink-0"
+                      title="Search LinkedIn"
+                    >
+                      <Linkedin className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteSearch(s.id)}
+                      className="p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors shrink-0"
+                      title="Delete saved search"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
               {savedSearches.length > 3 && (
