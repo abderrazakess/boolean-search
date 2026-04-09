@@ -7,6 +7,13 @@ import { generateObject } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { ENV } from "./_core/env";
 import { createPatchedFetch } from "./_core/patchedFetch";
+import {
+  BOOLEAN_SYSTEM_PROMPT,
+  buildBooleanUserPrompt,
+  sanitizeGroups,
+  isValidBooleanOutput,
+  buildFallbackGroups,
+} from "./_core/booleanPrompt";
 
 function createLLMProvider() {
   const baseURL = ENV.forgeApiUrl.endsWith("/v1")
@@ -51,20 +58,20 @@ export const appRouter = router({
       .query(async ({ input }) => {
         // Verified working RSS feeds (tested directly)
         const FEEDS = {
-          hrdive:    { url: "https://www.hrdive.com/feeds/news/",      source: "HR Dive" },
-          hrexec:    { url: "https://hrexecutive.com/feed/",           source: "HR Executive" },
-          social:    { url: "https://socialtalent.com/feed/",          source: "SocialTalent" },
-          personnel: { url: "https://www.personneltoday.com/feed/",    source: "Personnel Today" },
+          hrdive: { url: "https://www.hrdive.com/feeds/news/", source: "HR Dive" },
+          hrexec: { url: "https://hrexecutive.com/feed/", source: "HR Executive" },
+          social: { url: "https://socialtalent.com/feed/", source: "SocialTalent" },
+          personnel: { url: "https://www.personneltoday.com/feed/", source: "Personnel Today" },
         };
 
         const CATEGORY_FEEDS: Record<string, (keyof typeof FEEDS)[]> = {
-          "labor-market":  ["hrdive", "hrexec"],
-          "industry":      ["hrdive", "hrexec"],
-          "hr-talent":     ["social", "hrdive"],
-          "remote":        ["hrdive", "personnel"],
-          "skills":        ["social", "hrexec"],
-          "compensation":  ["hrexec", "hrdive"],
-          "legal":         ["hrexec", "personnel"],
+          "labor-market": ["hrdive", "hrexec"],
+          "industry": ["hrdive", "hrexec"],
+          "hr-talent": ["social", "hrdive"],
+          "remote": ["hrdive", "personnel"],
+          "skills": ["social", "hrexec"],
+          "compensation": ["hrexec", "hrdive"],
+          "legal": ["hrexec", "personnel"],
         };
 
         // Country-to-feed preference: which feeds are most relevant per region
@@ -273,24 +280,24 @@ export const appRouter = router({
 
         // Period cutoff in ms
         const PERIOD_MS: Record<string, number> = {
-          "7d":  7  * 86400000,
+          "7d": 7 * 86400000,
           "30d": 30 * 86400000,
-          "3m":  90 * 86400000,
-          "6m":  180 * 86400000,
+          "3m": 90 * 86400000,
+          "6m": 180 * 86400000,
           "12m": 365 * 86400000,
         };
         const cutoff = Date.now() - (PERIOD_MS[input.period] ?? PERIOD_MS["12m"]);
 
         // Funding type label → round type string mapping for filtering
         const TYPE_LABELS: Record<string, string[]> = {
-          "pre-seed":  ["pre-seed", "pre seed"],
-          "seed":      ["seed"],
-          "series-a":  ["series a"],
-          "series-b":  ["series b"],
-          "series-c":  ["series c"],
-          "series-d":  ["series d", "series d+", "series e", "series f"],
-          "ipo":        ["ipo"],
-          "acquisition":["acquisition"],
+          "pre-seed": ["pre-seed", "pre seed"],
+          "seed": ["seed"],
+          "series-a": ["series a"],
+          "series-b": ["series b"],
+          "series-c": ["series c"],
+          "series-d": ["series d", "series d+", "series e", "series f"],
+          "ipo": ["ipo"],
+          "acquisition": ["acquisition"],
         };
 
         const rounds = results
@@ -322,24 +329,25 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const openai = createLLMProvider();
 
-        const contextLabel =
-          input.type === "jobTitle" ? "job title" : "skill or keyword";
+        try {
+          const result = await generateObject({
+            model: openai.chat("gpt-4o-mini"),
+            schema: keywordGroupSchema,
+            system: BOOLEAN_SYSTEM_PROMPT,
+            prompt: buildBooleanUserPrompt(input.keyword, input.type),
+          });
 
-        const result = await generateObject({
-          model: openai.chat("gpt-4o-mini"),
-          schema: keywordGroupSchema,
-          prompt: `You are a recruitment Boolean search expert. For the ${contextLabel}: "${input.keyword}", generate 6 keyword groups a recruiter would use to find candidates on LinkedIn or job boards.
+          const sanitized = sanitizeGroups(result.object.groups, input.keyword);
 
-Rules:
-- First entry should be "${input.keyword}" as an exact match group with the group name just being "${input.keyword}"
-- Each subsequent group represents a different angle: variants, tools, seniority levels, related technologies, abbreviations, or industry context
-- Group name format: "${input.keyword} (part of X)" where X describes the category
-- Each group should have 6-8 practical terms for Boolean searches
-- Terms should be real-world job titles, skills, or keywords that recruiters actually search for
-- Include common abbreviations, alternative spellings, and related terms`,
-        });
+          if (!isValidBooleanOutput(sanitized)) {
+            return { groups: buildFallbackGroups(input.keyword) };
+          }
 
-        return result.object;
+          return { groups: sanitized };
+        } catch {
+          // AI call failed — return a minimal fallback so the UI stays functional
+          return { groups: buildFallbackGroups(input.keyword) };
+        }
       }),
   }),
 });
